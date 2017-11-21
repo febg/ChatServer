@@ -1,15 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"log"
-	"net/http"
 
-	"github.com/febg/ChatServer/chatroom"
+	"github.com/febg/ChatServer/api"
 )
-
-
 
 func main() {
 	// Create a simple file server
-	room :=
+
+	control, err := api.NewControl(api.ControlConfig{
+		LocalDB: true,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(control)
 }
