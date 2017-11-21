@@ -6,34 +6,58 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-type Message struct {
+type SentMessage struct {
 	ID         string
+	ChatID     string
 	SenderID   string
 	ReceiverID string
 	Message    string
-	Info       Information
+	TimeSent   int64
+	Saved      bool
+}
+
+type RecievedMessage struct {
+	ID           string
+	ChatID       string
+	ReceiverID   string
+	SenderID     string
+	Message      string
+	TimeRecieved int64
+	Saved        bool
+	Info         Information
 }
 
 type Information struct {
-	TimeSent     int64
-	TimeRecieved int64
-	Opened       bool
-	Saved        bool
+	Opened     bool
+	TimeOpened int64
 }
 
-func NewMessage(sender string, reciever string, message string) (*Message, error) {
-	mess := Message{
+func NewMessage(sender string, reciever string, message string) (*SentMessage, *RecievedMessage, error) {
+
+	chatID := uuid.NewV4().String()
+
+	sm := SentMessage{
 		ID:         uuid.NewV4().String(),
+		ChatID:     chatID,
 		SenderID:   sender,
 		ReceiverID: reciever,
 		Message:    message,
-		Info: Information{
-			TimeSent: time.Now().Unix(),
+		TimeSent:   time.Now().Unix(),
+		Saved:      false,
+	}
 
+	rm := RecievedMessage{
+		ID:           uuid.NewV4().String(),
+		ChatID:       chatID,
+		ReceiverID:   reciever,
+		SenderID:     sender,
+		Message:      message,
+		TimeRecieved: time.Now().Unix(),
+		Saved:        false,
+		Info: Information{
 			Opened: false,
-			Saved:  false,
 		},
 	}
 
-	return &mess, nil
+	return &sm, &rm, nil
 }
