@@ -2,15 +2,18 @@ package api
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/febg/ChatServer/chatroom"
 	"github.com/febg/ChatServer/datastore"
+	"github.com/gorilla/websocket"
 )
 
 type Control struct {
-	Config ControlConfig
-	Rooms  []*chatroom.ChatRoom
-	DB     datastore.Datastore
+	Config   ControlConfig
+	Rooms    *chatroom.ChatRoom
+	DB       datastore.Datastore
+	Upgrader websocket.Upgrader
 }
 
 type ControlConfig struct {
@@ -20,7 +23,12 @@ type ControlConfig struct {
 func NewControl(config ControlConfig) (*Control, error) {
 	c := Control{
 		Config: config,
-		Rooms:  []*chatroom.ChatRoom{},
+
+		Upgrader: websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool {
+				return true
+			},
+		},
 	}
 	var err error
 	if config.LocalDB {

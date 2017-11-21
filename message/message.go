@@ -16,6 +16,12 @@ type SentMessage struct {
 	Saved      bool
 }
 
+type Message struct {
+	Email    string `json:"email"`
+	Username string `json:"username"`
+	Message  string `json:"message"`
+}
+
 type RecievedMessage struct {
 	ID           string
 	ChatID       string
