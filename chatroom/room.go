@@ -2,6 +2,7 @@ package chatroom
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/febg/ChatServer/message"
 	"github.com/gorilla/websocket"
@@ -11,6 +12,19 @@ type ChatRoom struct {
 	Upgrader    websocket.Upgrader
 	Clients     map[*websocket.Conn]bool
 	Broadcaster chan message.SentMessage
+}
+
+func NewChatRoom() *ChatRoom {
+	cr := ChatRoom{
+		Upgrader: websocket.Upgrader{
+			CheckOrigin: func(r *http.Request) bool {
+				return true
+			},
+		},
+		Clients:     make(map[*websocket.Conn]bool),
+		Broadcaster: make(chan message.SentMessage),
+	}
+	return &cr
 }
 
 func (c *ChatRoom) HandleMessages() {
