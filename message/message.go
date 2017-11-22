@@ -8,7 +8,7 @@ type SentMessage struct {
 	SenderID   string
 	ReceiverID string
 	Message    string
-	TimeSent   int64
+	TimeSent   int64 //Client or Server?
 	Saved      bool
 }
 
@@ -22,7 +22,7 @@ type RecievedMessage struct {
 	ReceiverID   string
 	SenderID     string
 	Message      string
-	TimeRecieved int64
+	TimeRecieved int64 //Client or Server
 	Saved        bool
 	Info         Information
 }
@@ -32,6 +32,10 @@ type Information struct {
 	TimeOpened int64
 }
 
-func (sm *SentMessage) SetCurrentTime() {
+func (sm SentMessage) SetCurrentTime() {
 	sm.TimeSent = time.Now().Unix()
+}
+
+func StoreMessage(m Message) {
+	//TODO Storing messages into dataBase
 }

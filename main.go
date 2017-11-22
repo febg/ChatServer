@@ -21,7 +21,7 @@ func main() {
 
 	control.Rooms = chatroom.NewChatRoom()
 
-	go chatRoom.HandleMessages()
+	go control.Rooms.HandleMessages()
 
 	fmt.Println(control)
 	router := api.Router(control)

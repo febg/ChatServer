@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/febg/ChatServer/message"
+	"github.com/gorilla/mux"
 	uuid "github.com/satori/go.uuid"
 )
 
@@ -32,8 +33,19 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 		}
 		msg.SetCurrentTime()
 		// Send the newly received message to the broadcast channel
+		message.StoreMessage(msg)
 		c.Rooms.Broadcaster <- msg
 	}
 	log.Println("Terminated Websocket")
+
+}
+
+func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	msgID := v["message_id"]
+	if msgID == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprint(w, "ERROR: Message ID information not complete")
+	}
 
 }
