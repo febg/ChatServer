@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/febg/ChatServer/message"
+	uuid "github.com/satori/go.uuid"
 )
 
 func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
@@ -16,18 +18,20 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	}
 	// Close connection at the end of function
 	defer ws.Close()
-	c.Rooms.Clients[ws] = true
+	connectionID := uuid.NewV4().String()
+	c.Rooms.Clients[connectionID] = ws
 	fmt.Println(c.Rooms.Clients)
 
 	for {
-		var msg message.Message
+		var msg message.SentMessage
 		// Read in a new message as JSON and map it to a Message object
 		err := ws.ReadJSON(&msg)
 		if err != nil {
 			log.Printf("error: %v", err)
-			delete(c.Rooms.Clients, ws)
+			delete(c.Rooms.Clients, connectionID)
 			break
 		}
+		msg.TimeSent = time.Now().Unix()
 		// Send the newly received message to the broadcast channel
 		c.Rooms.Broadcaster <- msg
 	}

@@ -8,15 +8,15 @@ import (
 )
 
 type ChatRoom struct {
-	Clients     map[*websocket.Conn]bool
-	Broadcaster chan message.Message
+	Clients     map[string]*websocket.Conn
+	Broadcaster chan message.SentMessage
 }
 
 func NewChatRoom() *ChatRoom {
 	cr := ChatRoom{
 
-		Clients:     make(map[*websocket.Conn]bool),
-		Broadcaster: make(chan message.Message),
+		Clients:     make(map[string]*websocket.Conn),
+		Broadcaster: make(chan message.SentMessage),
 	}
 	return &cr
 }
@@ -26,13 +26,17 @@ func (c *ChatRoom) HandleMessages() {
 		// Grab the next message from the broadcast channel
 		msg := <-c.Broadcaster
 		// Send it out to every client that is currently connected
-		for client := range c.Clients {
-			err := client.WriteJSON(msg)
+		rAdd := c.Clients[msg.ReceiverID]
+
+		if rAdd != nil {
+			err := rAdd.WriteJSON(msg)
 			if err != nil {
 				log.Printf("error: %v", err)
-				client.Close()
-				delete(c.Clients, client)
+				rAdd.Close()
+				delete(c.Clients, msg.ReceiverID)
 			}
+		} else {
+			log.Println("[Error] User not found")
 		}
 	}
 }
