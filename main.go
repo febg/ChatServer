@@ -19,9 +19,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	chatRoom := chatroom.NewChatRoom()
-
-	control.Rooms = chatRoom
+	control.Rooms = chatroom.NewChatRoom()
 
 	go chatRoom.HandleMessages()
 

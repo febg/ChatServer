@@ -1,5 +1,7 @@
 package message
 
+import "time"
+
 type SentMessage struct {
 	ID         string
 	ChatID     string
@@ -10,10 +12,8 @@ type SentMessage struct {
 	Saved      bool
 }
 
-type Message struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
-	Message  string `json:"message"`
+type Message interface {
+	SetCurrentTime()
 }
 
 type RecievedMessage struct {
@@ -30,4 +30,8 @@ type RecievedMessage struct {
 type Information struct {
 	Opened     bool
 	TimeOpened int64
+}
+
+func (sm *SentMessage) SetCurrentTime() {
+	sm.TimeSent = time.Now().Unix()
 }

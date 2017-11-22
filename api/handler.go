@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/febg/ChatServer/message"
 	uuid "github.com/satori/go.uuid"
@@ -31,8 +30,7 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 			delete(c.Rooms.Clients, connectionID)
 			break
 		}
-		msg.TimeSent = time.Now().Unix()
-		log.Println(msg)
+		msg.SetCurrentTime()
 		// Send the newly received message to the broadcast channel
 		c.Rooms.Broadcaster <- msg
 	}
