@@ -32,6 +32,7 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		msg.TimeSent = time.Now().Unix()
+		log.Println(msg)
 		// Send the newly received message to the broadcast channel
 		c.Rooms.Broadcaster <- msg
 	}
