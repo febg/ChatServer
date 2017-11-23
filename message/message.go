@@ -8,7 +8,7 @@ type SentMessage struct {
 	SenderID   string
 	ReceiverID string
 	Message    string
-	TimeSent   int64 //Client or Server?
+	TimeSent   int64
 	Saved      bool
 }
 
@@ -22,7 +22,7 @@ type RecievedMessage struct {
 	ReceiverID   string
 	SenderID     string
 	Message      string
-	TimeRecieved int64 //Client or Server
+	TimeRecieved int64
 	Saved        bool
 	Info         Information
 }
