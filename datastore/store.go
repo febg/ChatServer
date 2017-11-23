@@ -1,11 +1,21 @@
 package datastore
 
+import (
+	"github.com/febg/ChatServer/message"
+)
+
 type Datastore interface {
 }
 
 type LocalDB struct {
+	SentMessages     []message.SentMessage
+	RecievedMessages []message.RecievedMessage
 }
 
 func NewLocalDB() (*LocalDB, error) {
-	return nil, nil
+	DB := LocalDB{
+		SentMessages:     []message.SentMessage{},
+		RecievedMessages: []message.RecievedMessage{},
+	}
+	return &DB, nil
 }

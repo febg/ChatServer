@@ -12,10 +12,6 @@ type SentMessage struct {
 	Saved      bool
 }
 
-type Message interface {
-	SetCurrentTime()
-}
-
 type RecievedMessage struct {
 	ID           string
 	ChatID       string
@@ -32,10 +28,6 @@ type Information struct {
 	TimeOpened int64
 }
 
-func (sm SentMessage) SetCurrentTime() {
+func (sm *SentMessage) SetCurrentTime() {
 	sm.TimeSent = time.Now().Unix()
-}
-
-func StoreMessage(m Message) {
-	//TODO Storing messages into dataBase
 }
