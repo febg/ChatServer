@@ -63,6 +63,6 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
 	db := c.DB.GetSentMessages()
 	for _, v := range db.SentMessages {
-		fmt.Fprintf(w, "%v", v)
+		fmt.Fprintf(w, "%+v\n\n", v)
 	}
 }
