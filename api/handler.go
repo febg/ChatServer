@@ -79,5 +79,5 @@ func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "%+v\n\n", v)
 		}
 	}()
-
+	wg.Wait()
 }
