@@ -8,6 +8,7 @@ type Datastore interface {
 	GetAllMessages() *LocalDB
 	GetSentMessages(string) []message.SentMessage
 	GetUserMessages(string) []message.Message
+	SaveMessage(string) bool
 }
 
 type LocalDB struct {
@@ -74,4 +75,20 @@ func (db *LocalDB) GetUserMessages(id string) []message.Message {
 
 	}
 	return m
+}
+
+func (db *LocalDB) SaveMessage(mID string) bool {
+	for _, v := range db.SentMessages {
+		if v.ID == mID {
+			v.Saved = true
+			return true
+		}
+	}
+	for _, v := range db.RecievedMessages {
+		if v.ID == mID {
+			v.Saved = true
+			return true
+		}
+	}
+	return false
 }

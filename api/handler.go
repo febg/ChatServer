@@ -60,6 +60,12 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "ERROR: Message ID information not complete")
 		return
 	}
+
+	if !c.DB.SaveMessage(msgID) {
+		log.Println("Unable to locate message for message id")
+		return
+	}
+
 }
 
 func (c *Control) HandleGetAllMessages(w http.ResponseWriter, r *http.Request) {
