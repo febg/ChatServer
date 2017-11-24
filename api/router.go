@@ -8,5 +8,6 @@ func Router(c *Control) *mux.Router {
 	r.Methods("GET").Path("/saveMessage/{message_id}").HandlerFunc(c.HandleSavedMessages)
 	r.Methods("GET").Path("/getAllMessages/").HandlerFunc(c.HandleGetAllMessages)
 	r.Methods("GET").Path("/getSentMessages/{sender_id}").HandlerFunc(c.HandleGetSentMessages)
+	r.Methods("GET").Path("/getUserMessages/{user_id}").HandlerFunc(c.HandleGetUserMessages)
 	return r
 }

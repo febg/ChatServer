@@ -102,6 +102,8 @@ func (c *Control) HandleGetUserMessages(w http.ResponseWriter, r *http.Request) 
 	}
 
 	um := c.DB.GetUserMessages(uID)
+	for _, v := range um {
+		fmt.Fprintf(w, "%+v\n\n", v)
+	}
 
-	fmt.Fprintf(w, "%+v", um)
 }
