@@ -1,13 +1,12 @@
 package datastore
 
-import (
-	"github.com/febg/ChatServer/message"
-)
+import "github.com/febg/ChatServer/message"
 
 type Datastore interface {
 	StoreSentMessage(message.SentMessage) error
 	StoreRecievedMessage(message.RecievedMessage) error
-	GetMessages() error
+	//GetRecievedMessages() error
+	GetSentMessages() *LocalDB
 }
 
 type LocalDB struct {
@@ -33,7 +32,6 @@ func (db *LocalDB) StoreRecievedMessage(sm message.RecievedMessage) error {
 	return nil
 }
 
-func (db *LocalDB) GetMessages() error {
-
-	return nil
+func (db *LocalDB) GetSentMessages() *LocalDB {
+	return db
 }
