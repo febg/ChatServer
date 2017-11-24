@@ -7,6 +7,7 @@ type Datastore interface {
 	StoreRecievedMessage(message.SentMessage) error
 	GetAllMessages() *LocalDB
 	GetSentMessages(string) []message.SentMessage
+	GetUserMessages(string) []message.Message
 }
 
 type LocalDB struct {
@@ -56,4 +57,21 @@ func (db *LocalDB) GetSentMessages(id string) []message.SentMessage {
 		}
 	}
 	return sm
+}
+
+func (db *LocalDB) GetUserMessages(id string) []message.Message {
+	m := []message.Message{}
+	for _, v := range db.SentMessages {
+		if v.SenderID == id {
+			m = append(m, v)
+		}
+	}
+
+	for _, v := range db.RecievedMessages {
+		if v.ReceiverID == id {
+			m = append(m, v)
+		}
+
+	}
+	return m
 }

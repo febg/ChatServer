@@ -93,3 +93,15 @@ func (c *Control) HandleGetSentMessages(w http.ResponseWriter, r *http.Request) 
 		fmt.Fprintf(w, "%+v\n\n", v)
 	}
 }
+
+func (c *Control) HandleGetUserMessages(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	uID := v["user_id"]
+	if uID == "" {
+		log.Println("-> [ERROR] Unable to get sender ID")
+	}
+
+	um := c.DB.GetUserMessages(uID)
+
+	fmt.Fprintf(w, "%+v", um)
+}
