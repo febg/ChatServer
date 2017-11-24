@@ -44,6 +44,12 @@ func (db *LocalDB) StoreRecievedMessage(sm message.SentMessage) error {
 	return nil
 }
 
-func (db *LocalDB) GetSentMessages() *LocalDB {
-	return db
+func (db *LocalDB) GetSentMessages(id string) []message.SentMessage {
+	sm := []message.SentMessage{}
+	for _, v := range db.SentMessages {
+		if v.SenderID == id {
+			sm = append(sm, v)
+		}
+	}
+	return sm
 }

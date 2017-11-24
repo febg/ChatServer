@@ -2,6 +2,10 @@ package message
 
 import "time"
 
+type Message interface {
+	SetCurrentTime()
+}
+
 type SentMessage struct {
 	ID         string
 	ChatID     string
