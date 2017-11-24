@@ -31,12 +31,21 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 			delete(c.Rooms.Clients, connectionID)
 			break
 		}
+
 		msg.SetCurrentTime()
+
+		if msg.ReceiverID == "" || msg.Message == "" || msg.SenderID == "" {
+			log.Printf("-> [ERROR] Message information not complete %+v", msg)
+			return
+		}
+
+		// Store SentMessage and RecievedMessage
+		c.DB.StoreSentMessage(msg)
 		// Send the newly received message to the broadcast channel
 
 		c.Rooms.Broadcaster <- msg
 	}
-	log.Println("Terminated Websocket")
+	log.Println(c.DB)
 
 }
 
@@ -47,6 +56,12 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 	if msgID == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprint(w, "ERROR: Message ID information not complete")
+		return
 	}
+}
 
+func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
+	for i := range c.DB.SentMessages {
+
+	}
 }
