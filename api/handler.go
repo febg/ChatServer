@@ -62,8 +62,8 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
-	db := c.DB.GetSentMessages()
+func (c *Control) HandleGetAllMessages(w http.ResponseWriter, r *http.Request) {
+	db := c.DB.GetAllMessages()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
@@ -80,4 +80,16 @@ func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 	wg.Wait()
+}
+
+func (c *Control) HandleGetSentMessages(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	sID := v["sender_id"]
+	if sID == "" {
+		log.Println("-> [ERROR] Unable to get sender ID")
+	}
+	sm := c.DB.GetSentMessages(sID)
+	for _, v := range sm {
+		fmt.Fprintf(w, "%+v\n\n", v)
+	}
 }

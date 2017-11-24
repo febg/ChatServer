@@ -5,8 +5,8 @@ import "github.com/febg/ChatServer/message"
 type Datastore interface {
 	StoreSentMessage(message.SentMessage) error
 	StoreRecievedMessage(message.SentMessage) error
-	//GetRecievedMessages() error
-	GetSentMessages() *LocalDB
+	GetAllMessages() *LocalDB
+	GetSentMessages(string) []message.SentMessage
 }
 
 type LocalDB struct {
@@ -42,6 +42,10 @@ func (db *LocalDB) StoreRecievedMessage(sm message.SentMessage) error {
 	rm.SetCurrentTime()
 	db.RecievedMessages = append(db.RecievedMessages, rm)
 	return nil
+}
+
+func (db *LocalDB) GetAllMessages() *LocalDB {
+	return db
 }
 
 func (db *LocalDB) GetSentMessages(id string) []message.SentMessage {
