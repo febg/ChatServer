@@ -84,7 +84,8 @@ func (db *LocalDB) GetUserMessages(id string) []message.Message {
 func (db *LocalDB) SaveMessage(mID string) bool {
 	for _, v := range db.SentMessages {
 		if v.ID == mID {
-			v.Saved = true
+			sa := &v
+			sa.Saved = true
 			log.Println(v)
 			return true
 		}
@@ -93,7 +94,6 @@ func (db *LocalDB) SaveMessage(mID string) bool {
 		if v.ID == mID {
 			sa := &v
 			sa.Saved = true
-			log.Println(v)
 			return true
 		}
 	}
