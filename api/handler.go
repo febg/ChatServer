@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/febg/ChatServer/message"
 	"github.com/gorilla/mux"
@@ -41,6 +42,7 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 
 		// Store SentMessage and RecievedMessage
 		c.DB.StoreSentMessage(msg)
+		c.DB.StoreRecievedMessage(msg)
 		// Send the newly received message to the broadcast channel
 
 		c.Rooms.Broadcaster <- msg
@@ -62,7 +64,20 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 
 func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
 	db := c.DB.GetSentMessages()
-	for _, v := range db.SentMessages {
-		fmt.Fprintf(w, "%+v\n\n", v)
-	}
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _, v := range db.SentMessages {
+			fmt.Fprintf(w, "%+v\n\n", v)
+		}
+	}()
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		for _, v := range db.RecievedMessages {
+			fmt.Fprintf(w, "%+v\n\n", v)
+		}
+	}()
+
 }

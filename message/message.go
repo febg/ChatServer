@@ -31,3 +31,7 @@ type Information struct {
 func (sm *SentMessage) SetCurrentTime() {
 	sm.TimeSent = time.Now().Unix()
 }
+
+func (rm *RecievedMessage) SetCurrentTime() {
+	rm.TimeRecieved = time.Now().Unix()
+}
