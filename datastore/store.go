@@ -28,7 +28,7 @@ func (db *LocalDB) StoreSentMessage(sm message.SentMessage) error {
 
 }
 
-func (db *LocalDB) StoreRecievedMessage(sm message.RecievedMessage) error {
+func (db *LocalDB) StoreRecievedMessage(sm message.SentMessage) error {
 	rm := message.RecievedMessage{
 		ChatID:     sm.ChatID,
 		ReceiverID: sm.ReceiverID,
