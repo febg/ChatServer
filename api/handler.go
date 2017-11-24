@@ -36,7 +36,7 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 
 		if msg.ReceiverID == "" || msg.Message == "" || msg.SenderID == "" {
 			log.Printf("-> [ERROR] Message information not complete %+v", msg)
-			return
+			break
 		}
 
 		// Store SentMessage and RecievedMessage
@@ -62,7 +62,7 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 
 func (c *Control) HandleGetMessages(w http.ResponseWriter, r *http.Request) {
 	db := c.DB.GetSentMessages()
-	for i := range db.SentMessages {
-		fmt.Fprintf(w, "%v", i)
+	for _, v := range db.SentMessages {
+		fmt.Fprintf(w, "%v", v)
 	}
 }
