@@ -95,14 +95,23 @@ func (c *Control) HandleGetUserSentMessages(w http.ResponseWriter, r *http.Reque
 		log.Println("-> [ERROR] GetUserSentMessages: Unable to get user ID")
 		return
 	}
-	sm := c.DB.GetSentMessages(sID)
+	sm := c.DB.GetUserSentMessages(sID)
 	for _, v := range sm {
 		fmt.Fprintf(w, "%+v\n\n", v)
 	}
 }
 
-func (c *Control) HandleUserRecievedMessages(w http.ResponseWriter, r *http.Request) {
+func (c *Control) HandleGetUserRecievedMessages(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	uID := v["user_id"]
+	if uID == "" {
+		log.Println("-> [ERROR] GetUserRecievedMessages: Unable to get user ID")
+	}
+	rm := c.DB.GetUserRecievedMessages(uID)
 
+	for _, v := range rm {
+		fmt.Fprintf(w, "%+v\n\n", v)
+	}
 }
 
 func (c *Control) HandleGetUserMessages(w http.ResponseWriter, r *http.Request) {
