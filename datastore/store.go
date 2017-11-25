@@ -1,10 +1,6 @@
 package datastore
 
-import (
-	"log"
-
-	"github.com/febg/ChatServer/message"
-)
+import "github.com/febg/ChatServer/message"
 
 type Datastore interface {
 	StoreSentMessage(message.SentMessage) error
@@ -86,7 +82,6 @@ func (db *LocalDB) SaveMessage(mID string) bool {
 		if v.ID == mID {
 			sa := &v
 			sa.Saved = true
-			log.Println(v)
 			return true
 		}
 	}

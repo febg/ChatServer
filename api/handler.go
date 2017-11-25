@@ -51,13 +51,13 @@ func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
+func (c *Control) HandleSavedMessage(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	msgID := v["message_id"]
 
 	if msgID == "" {
 		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprint(w, "ERROR: Message ID information not complete")
+		fmt.Fprint(w, "ERROR: SaveMessage: Message ID information not complete")
 		return
 	}
 
@@ -65,7 +65,7 @@ func (c *Control) HandleSavedMessages(w http.ResponseWriter, r *http.Request) {
 		log.Println("Unable to locate message for message id")
 		return
 	}
-
+	print()
 }
 
 func (c *Control) HandleGetAllMessages(w http.ResponseWriter, r *http.Request) {
@@ -88,11 +88,12 @@ func (c *Control) HandleGetAllMessages(w http.ResponseWriter, r *http.Request) {
 	wg.Wait()
 }
 
-func (c *Control) HandleGetSentMessages(w http.ResponseWriter, r *http.Request) {
+func (c *Control) HandleGetUserSentMessages(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
-	sID := v["sender_id"]
+	sID := v["user_id"]
 	if sID == "" {
-		log.Println("-> [ERROR] Unable to get sender ID")
+		log.Println("-> [ERROR] GetUserSentMessages: Unable to get user ID")
+		return
 	}
 	sm := c.DB.GetSentMessages(sID)
 	for _, v := range sm {
@@ -100,11 +101,16 @@ func (c *Control) HandleGetSentMessages(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+func (c *Control) HandleUserRecievedMessages(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func (c *Control) HandleGetUserMessages(w http.ResponseWriter, r *http.Request) {
 	v := mux.Vars(r)
 	uID := v["user_id"]
 	if uID == "" {
-		log.Println("-> [ERROR] Unable to get sender ID")
+		log.Println("-> [ERROR] GetUserMessages: Unable to get sender ID")
+		return
 	}
 
 	um := c.DB.GetUserMessages(uID)
