@@ -25,8 +25,19 @@ func (c *ChatRoom) HandleMessages() {
 	for {
 		// Grab the next message from the broadcast channel
 		msg := <-c.Broadcaster
-		// Send it out to every client that is currently connected
 		rAdd := c.Clients[msg.ReceiverID]
+		if msg.ID == "ping" {
+			err := rAdd.WriteJSON(message.SentMessage{
+				Message: "ping",
+			})
+
+			if err != nil {
+				log.Printf("error: %v", err)
+				rAdd.Close()
+			}
+
+		}
+		// Send it out to reciever client that is currently connected
 
 		if rAdd != nil {
 			err := rAdd.WriteJSON(msg)
