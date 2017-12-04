@@ -10,6 +10,7 @@ type Datastore interface {
 	GetUserRecievedMessages(string) []message.RecievedMessage
 	GetUserMessages(string) []message.Message
 	SaveMessage(string) bool
+	GetChatMessages(string) []message.Message
 }
 
 type LocalDB struct {
@@ -104,4 +105,19 @@ func (db *LocalDB) SaveMessage(mID string) bool {
 		}
 	}
 	return false
+}
+
+func (db *LocalDB) GetChatMessages(cID string) []message.Message {
+	cm := []message.Message{}
+	for _, v := range db.SentMessages {
+		if v.ChatID == cID {
+			cm = append(cm, v)
+		}
+	}
+	for _, v := range db.RecievedMessages {
+		if v.ChatID == cID {
+			cm = append(cm, v)
+		}
+	}
+	return cm
 }

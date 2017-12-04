@@ -128,3 +128,13 @@ func (c *Control) HandleGetUserMessages(w http.ResponseWriter, r *http.Request) 
 	}
 
 }
+
+func (c *Control) HandleGetChatMessages(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	cID := v["chat_id"]
+	if cID == "" {
+		log.Println("-> [ERROR] GetChat: Unable to get chat ID")
+		return
+	}
+
+}
