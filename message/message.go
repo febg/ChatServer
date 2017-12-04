@@ -6,14 +6,15 @@ type Message interface {
 	SetCurrentTime()
 }
 
-// {"message_id":"","chat_id":"","sender_id":"","reciever_id":"message":"","time_saved":"","message":""}
+// {"message_id":"","chat_id":"","sender_id":"","reciever_id":"",
+//"message":"","time_sent":"","saved":""}
 
 type SentMessage struct {
 	ID         string `json:"message_id"`
 	ChatID     string `json:"chat_id"`
 	SenderID   string `json:"sender_id"`
 	ReceiverID string `json:"reciever_id"`
-	Message    string `json:"message_id"`
+	Message    string `json:"message"`
 	TimeSent   int64  `json:"time_sent"`
 	Saved      bool   `json:"saved"`
 }

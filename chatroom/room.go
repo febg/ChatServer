@@ -26,16 +26,13 @@ func (c *ChatRoom) HandleMessages() {
 		// Grab the next message from the broadcast channel
 		msg := <-c.Broadcaster
 		rAdd := c.Clients[msg.ReceiverID]
-		if msg.ID == "ping" {
-			err := rAdd.WriteJSON(message.SentMessage{
-				Message: "ping",
-			})
 
+		if msg.SenderID == "ping" {
+			w, err := rAdd.NextWriter(websocket.TextMessage)
 			if err != nil {
-				log.Printf("error: %v", err)
-				rAdd.Close()
+				return
 			}
-
+			w.Write([]byte("hola"))
 		}
 		// Send it out to reciever client that is currently connected
 

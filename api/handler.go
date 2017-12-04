@@ -13,6 +13,8 @@ import (
 
 func (c *Control) HandleConnections(w http.ResponseWriter, r *http.Request) {
 	//Upgrade request to websocket
+	u, p, _ := r.BasicAuth()
+	log.Printf("request: %+v, %v, %v", u, p, r)
 	ws, err := c.Upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Fatal(err)
